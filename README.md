@@ -5,3 +5,7 @@ En esta cuarta version :
 --Al decidir ingresar nos abrira otra interfaz llamada "Selecionar rol" , que nos muestra la opcion de escojer si somos: Pacientes, Doctores o Enfermeros
 --Nos permitr registrar pacintes y agendar sus citas(Se agregaron clases)
 --Nos permite registrar doctores y administrar el personal (Doctores y enfermeros) (Permite editar los datos y eliminar a el personal)
+--Nos permite registrar enfermeros y administrar el personal (Doctores y enfermeros) (Permite editar los datos y eliminar a el personal)
+
+EXTRA:
+Se asigna automaticamente en que camilla se encontrara el paciente y nos muestra en la ventana pacientes si hay cmillas disponibles
