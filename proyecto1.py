@@ -186,10 +186,44 @@ def guardar_doctor(entry_nombre, entry_apellidopaterno, entry_apellidomaterno, c
     if not nombre or not apellidopa or not apellidoma or not genero or not edad or not area or not especialidad:
         messagebox.showerror("Error", "Complete todos los campos")
         return
+    try:
+        edad = int(edad)
+    except ValueError:
+        messagebox.showerror("Error", "Edad debe ser un número")
+        return
 
     doctores.append(Doctor(nombre, apellidopa, apellidoma, genero, edad, area, especialidad))
     messagebox.showinfo("Éxito", f"Doctor {nombre} registrado.")
     
+    entry_nombre.delete(0, tk.END)
+    entry_apellidopaterno.delete(0, tk.END)
+    entry_apellidomaterno.delete(0, tk.END)
+    combo_genero.delete(0, tk.END)
+    entry_edad.delete(0, tk.END)
+    combo_area.delete(0, tk.END)
+    combo_especialidad.delete(0, tk.END)
+
+def guardar_enfermero(entry_nombre, entry_apellidopaterno, entry_apellidomaterno, combo_genero, entry_edad, combo_area, combo_especialidad):
+    nombre = entry_nombre.get().strip()
+    apellidopa = entry_apellidopaterno.get().strip()
+    apellidoma = entry_apellidomaterno.get().strip()
+    genero = combo_genero.get().strip()
+    edad = entry_edad.get().strip()
+    area = combo_area.get().strip()
+    especialidad = combo_especialidad.get().strip()
+
+    if not nombre or not apellidopa or not apellidoma or not genero or not edad or not area or not especialidad:
+        messagebox.showerror("Error", "Complete todos los campos")
+        return
+    try:
+        edad = int(edad)
+    except ValueError:
+        messagebox.showerror("Error", "Edad debe ser un número")
+        return
+    
+    enfermeros.append(Enfermero(nombre, apellidopa, apellidoma, genero, edad, area, especialidad))
+    messagebox.showinfo("Éxito", f"Enfermero/a {nombre} registrado/a.")
+
     entry_nombre.delete(0, tk.END)
     entry_apellidopaterno.delete(0, tk.END)
     entry_apellidomaterno.delete(0, tk.END)
@@ -326,7 +360,7 @@ def abrirseleccion():#funcion que permite abrir esta ventana
     tk.Button(menu, text="Doctor", font=fuente_boton, bg=azul_principal, fg=blanco,activebackground=azul_oscuro, activeforeground=blanco,
                   bd=0, relief="ridge", padx=20, pady=8, command=lambda: registrodoctores(ventanadeeleccion)).pack(pady=10, fill="x")
     tk.Button(menu, text="Enfermero", font=fuente_boton, bg=azul_principal, fg=blanco,activebackground=azul_oscuro, activeforeground=blanco,
-                  bd=0, relief="ridge", padx=20, pady=8).pack(pady=10, fill="x")
+                  bd=0, relief="ridge", padx=20, pady=8, command=lambda: registroenfermeros(ventanadeeleccion)).pack(pady=10, fill="x")
     
 #==================================================Codigo de la ventana de Pacientes==========================================================
 def registropacientes(ventanadeeleccion):
@@ -465,6 +499,64 @@ def registrodoctores(ventanadeeleccion):
     opciones.add_command(label="Administrar personal", command=mostrar_personal)
     menudoctores.add_cascade(label="Opciones", menu=opciones)
     ventanadoctores.config(menu=menudoctores)
+
+   #====================================================Codigo de la ventana enfermeros============================================================
+def registroenfermeros(ventanadeeleccion):
+    ventanadeeleccion.withdraw()
+    ventanaenfermeros=tk.Toplevel(ventanadeeleccion)
+    ventanaenfermeros.title("Registro de Enfermeros")
+    ventanaenfermeros.configure(bg=gris)
+    # Encabezado
+    encabezado = tk.Frame(ventanaenfermeros, bg=azul_principal, height=50)
+    encabezado.pack(side="top", fill="x")
+    tk.Label(encabezado, text="Formulario de Enfermeros", fg="white", bg=azul_principal,font=("Helvetica", 16, "bold")).pack(pady=10)
+    #Formulario de registro del paciente
+    frame_formulario3 = tk.Frame(ventanaenfermeros, bg=gris)
+    frame_formulario3.pack()
+
+    tk.Label(frame_formulario3, text="Nombres:", bg=gris, font=fuente_general).grid(row=0, column=0)
+    entry_nombre= tk.Entry(frame_formulario3, font=fuente_general)
+    entry_nombre.grid(row=0, column=1)
+    
+    tk.Label(frame_formulario3, text="Apellido paterno:", bg=gris, font=fuente_general).grid(row=1, column=0)
+    entry_apellidopaterno= tk.Entry(frame_formulario3, font=fuente_general)
+    entry_apellidopaterno.grid(row=1, column=1)
+    
+    tk.Label(frame_formulario3, text="Apellido materno:", bg=gris, font=fuente_general).grid(row=2, column=0)
+    entry_apellidomaterno = tk.Entry(frame_formulario3, font=fuente_general)
+    entry_apellidomaterno.grid(row=2, column=1)
+
+    tk.Label(frame_formulario3, text="Genero:", bg=gris, font=fuente_general).grid(row=3, column=0)
+    combo_genero = ttk.Combobox(frame_formulario3, values=["Masculino", "Femenino"])
+    combo_genero.grid(row=3, column=1)
+    combo_genero.current(0)
+
+    tk.Label(frame_formulario3, text="Edad:", bg=gris, font=fuente_general).grid(row=4, column=0)
+    entry_edad = tk.Entry(frame_formulario3, font=fuente_general)
+    entry_edad.grid(row=4, column=1)
+
+    tk.Label(frame_formulario3, text="Área:", bg=gris, font=fuente_general).grid(row=5, column=0)
+    combo_area = ttk.Combobox(frame_formulario3, values=list(camillas.keys()), state="readonly")
+    combo_area.grid(row=5, column=1)
+
+    tk.Label(frame_formulario3, text="Especialidad:", bg=gris, font=fuente_general).grid(row=6, column=0)
+    combo_especialidad = ttk.Combobox(frame_formulario3, values=["Medicina Interna", "Cardiologia", "Pediatria", "Gineclogia", "Ninguna"])
+    combo_especialidad.grid(row=6, column=1)
+    combo_especialidad.current(0)
+
+    tk.Button(frame_formulario3, text="Registrar Enfermero",font=fuente_boton, bg=azul_principal,fg=blanco, command=lambda: guardar_enfermero(entry_nombre, entry_apellidopaterno, entry_apellidomaterno, combo_genero, entry_edad, combo_area, combo_especialidad)).grid(row=12, column=0, columnspan=2, pady=5)
+
+    def regresar():
+        ventanaenfermeros.destroy()
+        ventanadeeleccion.deiconify()
+
+    menuenfermeros=tk.Menu(ventanaenfermeros)
+    opciones= tk.Menu(menuenfermeros, tearoff=0)
+    opciones.add_command(label="Regresar", command=regresar)
+    opciones.add_command(label="Mostrar pacientes", command=mostrar_pacientes)
+    opciones.add_command(label="Administrar personal", command=mostrar_personal)
+    menuenfermeros.add_cascade(label="Opciones", menu=opciones)
+    ventanaenfermeros.config(menu=menuenfermeros) 
    
 #==============================================================================================Ventana Principal===========================================================================================================
 ventanaprincipal = tk.Tk()
